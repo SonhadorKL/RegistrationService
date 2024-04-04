@@ -1,0 +1,7 @@
+#pragma once
+#include <string>
+
+const std::string& kPathToSettings = @SETTINGS_PATH@;
+
+const std::string& kPathToCommands = kPathToSettings + "/commands.json";
+const std::string& kPathToRequirements = kPathToSettings + "/password_requirements.json";
