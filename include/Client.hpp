@@ -5,6 +5,9 @@
 
 class Client {
 public:
+    /* Set parameters of connection */
+    void GetConnection(std::string& user, std::string& password, std::string& host_ip, std::string& port);
+
     /* Process one command from std::cin. Throws an exception if something go wrong */
     bool GetNext(Query& to_request);
     

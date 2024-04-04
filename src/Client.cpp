@@ -4,7 +4,24 @@
 
 #include <iostream>
 
-bool Client::GetNext(Query& to_request) {
+void Client::GetConnection(std::string &user, std::string &password, std::string &host_ip, std::string &port) {
+    std::cout << "Please, set connection\n";
+    
+    std::cout << "Username: ";
+    std::cin >> user;
+
+    std::cout << "Password: ";
+    std::cin >> password;
+
+    std::cout << "IP: ";
+    std::cin >> host_ip;
+
+    std::cout << "Port: ";
+    std::cin >> port;
+}
+
+bool Client::GetNext(Query &to_request)
+{
     std::string user_input;
     std::getline(std::cin, user_input);
     
