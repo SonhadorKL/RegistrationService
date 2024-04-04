@@ -28,6 +28,7 @@ size_t GetNextId(pqxx::work& req) {
 Query::Query(std::string user, std::string password, std::string host_ip, std::string port) : 
         access_to_db("user = " + user + " password = " + password + " hostaddr = " + host_ip + " port = " + port),
         checker_(kPathToRequirements) {
+    CreateTable();
     PrepareConnection();
 }
 
@@ -47,7 +48,7 @@ std::string Query::Register(const Command &args) {
 
     // Check if password is good enough
     std::string check_status = checker_.Check(password);
-    if (check_status == "weak") {
+    if (check_status == kDefaultPasswordStatus) {
         throw std::invalid_argument("The password is too weak.\n");
     }
 
@@ -101,7 +102,18 @@ std::string Query::Feed(const Command &args) {
     return "Code: 200";
 }
 
-void Query::PrepareConnection() {
+void Query::CreateTable() {
+    pqxx::work req(access_to_db);
+    try {
+        req.exec("create table if not exists users_ (user_id_ int primary key, email_ text, password_ text)");
+        req.commit();
+    } catch (std::exception&) {
+
+    }
+}
+
+void Query::PrepareConnection()
+{
     std::ifstream ifs(kPathToCommands);
     json commands = json::parse(ifs);
     for (auto& [command_name, request] : commands.items()) {

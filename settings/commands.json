@@ -1,4 +1,5 @@
-{
+{   
+    "create" : "create table if not exists users_ (user_id_ int primary key, email_ text, password_ text)",
     "get_user_by_email": "select user_id_, email_, password_ from users_ where email_ = $1;",
     "insert_user" : "insert into users_ values ($1, $2, $3);",
     "get_user_by_id" : "select user_id_, email_, password_ from users_ where user_id_ = $1;",

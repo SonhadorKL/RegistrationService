@@ -11,7 +11,6 @@ class Query {
 public:
     Query(std::string user, std::string password, std::string host_ip, std::string port);
 
-
     // args: email, password
     // throw an error if email is not valid or user already exists
     std::string Register(const Command& args);
@@ -27,6 +26,7 @@ private:
     pqxx::connection access_to_db;
     PasswordChecker checker_;
 
+    void CreateTable();
     void PrepareConnection();
 
 };

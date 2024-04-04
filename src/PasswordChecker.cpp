@@ -1,4 +1,5 @@
 #include "PasswordChecker.hpp"
+#include "Config.h"
 
 #include <iostream>
 #include <set>
@@ -9,7 +10,7 @@ PasswordChecker::PasswordChecker(const std::string& path_to_config) : stream_to_
 } 
 
 std::string PasswordChecker::Check(const std::string& password) {
-    std::string best_status = kDefaultStatus;
+    std::string best_status = kDefaultPasswordStatus;
     int current_priority = -1;
     for (auto& [status, characteristic] : password_requirements_.items()) {
         const std::string& preprocessed_password = Preprocess(password, characteristic["special"]);

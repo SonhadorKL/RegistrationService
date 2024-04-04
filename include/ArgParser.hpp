@@ -13,6 +13,8 @@ public:
     bool IsValid() const;
     
     void AddArg(const std::string& arg);
+
+    // Parse given string by spaces
     void Parse(const std::string& to_parse);
 private:
     std::vector<std::string> args_;

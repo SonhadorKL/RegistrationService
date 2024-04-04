@@ -3,7 +3,6 @@
 #include <nlohmann/json.hpp>
 #include <fstream>
 
-
 class PasswordChecker {
     using json = nlohmann::json; 
 public:
@@ -17,9 +16,6 @@ public:
 private:
     json password_requirements_;
     std::ifstream stream_to_json_;
-
-    const std::string kDefaultStatus = "weak";
-
 
     std::string Preprocess(const std::string& password, int weak_words_count);
 
