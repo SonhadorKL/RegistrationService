@@ -1,10 +1,11 @@
 #include "Query.hpp"
 #include "Config.h"
+#include "PasswordChecker.hpp"
 
 
 #include <fstream>
-#include <PasswordChecker.hpp>
 #include <regex>
+#include <random>
 
 
 // Check if string is a valid email
@@ -13,14 +14,14 @@ bool IsEmailValid(const std::string& email_to_check) {
     return std::regex_match(email_to_check.c_str(), email_checker);
 }
 
-// TODO: make it smarter!!!
 // Generate new unique id
 size_t GetNextId(pqxx::work& req) {
-    size_t next_id = 1;
-    auto id_max = req.exec_prepared("get_max_id");
-    if (!id_max[0][0].is_null()) {
-        next_id = id_max[0][0].as<size_t>();
-        ++next_id; 
+    std::random_device rand;
+    std::mt19937_64 eng(rand());
+    std::uniform_int_distribution<long long> distr;
+    size_t next_id = std::abs(distr(eng));
+    while (!req.exec_prepared("get_user_by_id", next_id)[0][0].is_null()) {
+        next_id = std::abs(distr(eng));
     }
     return next_id;
 }
@@ -105,7 +106,7 @@ std::string Query::Feed(const Command &args) {
 void Query::CreateTable() {
     pqxx::work req(access_to_db);
     try {
-        req.exec("create table if not exists users_ (user_id_ int primary key, email_ text, password_ text)");
+        req.exec("create table if not exists users_ (user_id_ bigint primary key, email_ text, password_ text)");
         req.commit();
     } catch (std::exception&) {
 
