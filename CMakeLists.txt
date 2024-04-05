@@ -23,6 +23,7 @@ FetchContent_MakeAvailable(libpqxx)
 set(SETTINGS_PATH "\"${CMAKE_CURRENT_SOURCE_DIR}/settings/\"")
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/include/Config.h.in ${CMAKE_CURRENT_SOURCE_DIR}/include/Config.h)
 
+find_package(jwt-cpp CONFIG REQUIRED)
 
 set(SOURCE
     "src/PasswordChecker.cpp"
@@ -33,5 +34,5 @@ set(SOURCE
 
 add_executable(main ${RegistrationAPI_SOURCE_DIR}/main.cpp ${SOURCE})
 
-target_link_libraries(main PRIVATE nlohmann_json::nlohmann_json pqxx)
+target_link_libraries(main PRIVATE nlohmann_json::nlohmann_json pqxx jwt-cpp::jwt-cpp)
 target_include_directories(main PRIVATE ${RegistrationAPI_SOURCE_DIR}/include ${RegistrationAPI_SOURCE_DIR}/include/exe)

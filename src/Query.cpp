@@ -1,6 +1,7 @@
 #include "Query.hpp"
 #include "Config.h"
 #include "PasswordChecker.hpp"
+#include "jwt-cpp/jwt.h"
 
 
 #include <fstream>
@@ -86,17 +87,33 @@ std::string Query::Authorize(const Command &args) {
         throw std::invalid_argument("Wrong password\n");
     }
 
-    return "Token: " + user_id;
+    // Prepare token
+    auto token = jwt::create()
+    .set_type("JWT")
+    .set_payload_claim("user_id", jwt::claim(user_id))
+    .sign(jwt::algorithm::hs256{"secret"});
+
+    return "Token: " + token;
 }
 
 std::string Query::Feed(const Command &args) {
     std::string token = args.GetArg(0);
+    std::invalid_argument ex_invalid_token("Token invalid\n");
 
     // Check if token is valid
+    std::string user_id;
+    try {
+        auto decoded_token = jwt::decode(token);
+        user_id = decoded_token.get_payload_json()["user_id"].to_str();
+    } catch (std::exception&) {
+        throw ex_invalid_token;
+    }
+
+    // Check if id is valid
     pqxx::work req(access_to_db);
-    auto user_result = req.exec_prepared("get_user_by_id", token); 
+    auto user_result = req.exec_prepared("get_user_by_id", user_id); 
     if (user_result.size() == 0) {
-        throw std::invalid_argument("Token invalid\n");
+        throw ex_invalid_token;
     }
 
     // Success
@@ -109,12 +126,11 @@ void Query::CreateTable() {
         req.exec("create table if not exists users_ (user_id_ bigint primary key, email_ text, password_ text)");
         req.commit();
     } catch (std::exception&) {
-
+        // pass
     }
 }
 
-void Query::PrepareConnection()
-{
+void Query::PrepareConnection() {
     std::ifstream ifs(kPathToCommands);
     json commands = json::parse(ifs);
     for (auto& [command_name, request] : commands.items()) {
