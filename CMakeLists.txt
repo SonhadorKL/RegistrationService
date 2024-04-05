@@ -29,7 +29,7 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/include/Config.h.in ${CMAKE_CURRENT_S
 
 set(SOURCE
     "src/PasswordChecker.cpp"
-    "src/ArgParser.cpp"
+    "src/Command.cpp"
     "src/Client.cpp"
     "src/Query.cpp"
 )

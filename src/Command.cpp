@@ -1,4 +1,4 @@
-#include "ArgParser.hpp"
+#include "Command.hpp"
 
 void Command::Parse(const std::string& to_parse) {
     std::string processing_word = "";

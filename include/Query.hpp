@@ -4,7 +4,7 @@
 #include <nlohmann/json.hpp>
 #include "PasswordChecker.hpp"
 
-#include "ArgParser.hpp"
+#include "Command.hpp"
 
 class Query {
     using json = nlohmann::json; 

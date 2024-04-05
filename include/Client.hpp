@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ArgParser.hpp"
+#include "Command.hpp"
 #include "Query.hpp"
 
 class Client {
