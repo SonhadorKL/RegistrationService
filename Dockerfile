@@ -6,9 +6,6 @@ RUN apk add libpq-dev
 # Clone project
 COPY . .
 
-# Download jwt-cpp for JWT tokens
-RUN git clone https://github.com/Thalhammer/jwt-cpp.git && cd jwt-cpp && cmake . && cmake --install .
-
 # Build project
 RUN mkdir build && cd build && cmake .. && make -j8
 

@@ -28,5 +28,4 @@ private:
 
     void CreateTable();
     void PrepareConnection();
-
 };

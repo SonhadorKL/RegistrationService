@@ -3,11 +3,9 @@
 #include "PasswordChecker.hpp"
 #include "jwt-cpp/jwt.h"
 
-
 #include <fstream>
 #include <regex>
 #include <random>
-
 
 // Check if string is a valid email
 bool IsEmailValid(const std::string& email_to_check) {
@@ -64,11 +62,6 @@ std::string Query::Register(const Command &args) {
         +  "password_status: " + check_status;
 }
 
-/*  
-    // TODO: make tokens harder!
-    args: email, password
-    throw an error if email is not in the base or wrong password
-*/
 std::string Query::Authorize(const Command &args) {
     std::string email = args.GetArg(0);
     std::string password = args.GetArg(1);
@@ -98,7 +91,7 @@ std::string Query::Authorize(const Command &args) {
 
 std::string Query::Feed(const Command &args) {
     std::string token = args.GetArg(0);
-    std::invalid_argument ex_invalid_token("Token invalid\n");
+    std::invalid_argument ex_invalid_token("Token is invalid\n");
 
     // Check if token is valid
     std::string user_id;
