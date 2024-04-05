@@ -7,7 +7,7 @@ RUN apk add libpq-dev
 COPY . .
 
 # Build project
-RUN mkdir build && cd build && cmake .. && make -j8
+RUN mkdir build && cd build && cmake .. && make -j4
 
 # Run service
 ENTRYPOINT ["/bin/main"]
