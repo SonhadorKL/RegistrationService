@@ -1,31 +1,34 @@
 #pragma once
 
-#include <pqxx/pqxx>
 #include <nlohmann/json.hpp>
-#include "PasswordChecker.hpp"
+#include <pqxx/pqxx>
 
 #include "Command.hpp"
+#include "PasswordChecker.hpp"
 
 class Query {
-    using json = nlohmann::json; 
-public:
-    Query(std::string user, std::string password, std::string host_ip, std::string port);
+  using json = nlohmann::json;
 
-    // args: email, password
-    // throw an error if email is not valid or user already exists
-    std::string Register(const Command& args);
-    
-    // args: email, password
-    // throw an error if email is not in the base or wrong password
-    std::string Authorize(const Command& args);
+ public:
+  Query(std::string user, std::string password, std::string host_ip,
+        std::string port);
 
-    // args: token
-    // throw an error if token is not valid
-    std::string Feed(const Command& args);
-private:
-    pqxx::connection access_to_db;
-    PasswordChecker checker_;
+  // args: email, password
+  // throw an error if email is not valid or user already exists
+  std::string Register(const Command& args);
 
-    void CreateTable();
-    void PrepareConnection();
+  // args: email, password
+  // throw an error if email is not in the base or wrong password
+  std::string Authorize(const Command& args);
+
+  // args: token
+  // throw an error if token is not valid
+  std::string Feed(const Command& args);
+
+ private:
+  pqxx::connection access_to_db;
+  PasswordChecker checker_;
+
+  void CreateTable();
+  void PrepareConnection();
 };
